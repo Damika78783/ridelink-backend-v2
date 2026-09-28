@@ -1,0 +1,8 @@
+package lk.sliit.it3130.fare_payment_service.model;
+
+public enum VehicleType {
+    CAR,
+    VAN,
+    TUKTUK,
+    BIKE
+}
