@@ -25,3 +25,24 @@ replay_pid*
 
 application-local.properties
 **/application-local.properties
+# Build output
+target/
+build/
+
+# Secrets and local config
+.env
+*.env
+application-local.properties
+application-local.yml
+
+# IDE
+.idea/
+*.iml
+.vscode/
+.classpath
+.project
+.settings/
+
+# OS files
+.DS_Store
+Thumbs.db
