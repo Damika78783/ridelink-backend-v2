@@ -19,6 +19,8 @@ import lk.sliit.it3130.account_service.dto.LoginResponse;
 import lk.sliit.it3130.account_service.security.JwtUtil;
 import lk.sliit.it3130.account_service.model.Admin;
 import lk.sliit.it3130.account_service.repository.AdminRepository;
+import java.util.ArrayList; 
+import java.util.List;
 
 @Service
 public class AccountService {
@@ -85,8 +87,10 @@ public class AccountService {
     }
 
     private boolean emailExists(String email) {
-        return passengerRepository.existsByEmail(email) || driverRepository.existsByEmail(email);
-    }
+    return passengerRepository.existsByEmail(email)
+            || driverRepository.existsByEmail(email)
+            || adminRepository.existsByEmail(email);
+}
 
     // ---------- Login ----------
 
@@ -126,14 +130,39 @@ public class AccountService {
     // ---------- Profile ----------
 
     public AccountResponse getProfile(String email) {
-        Passenger passenger = passengerRepository.findByEmail(email).orElse(null);
-        if (passenger != null) return toResponse(passenger, "PASSENGER");
+    Passenger passenger = passengerRepository.findByEmail(email).orElse(null);
+    if (passenger != null) return toResponse(passenger, "PASSENGER");
 
-        Driver driver = driverRepository.findByEmail(email).orElse(null);
-        if (driver != null) return toResponse(driver, "DRIVER");
+    Driver driver = driverRepository.findByEmail(email).orElse(null);
+    if (driver != null) return toResponse(driver, "DRIVER");
 
-        throw new AccountNotFoundException("No account found for email: " + email);
-    }
+    Admin admin = adminRepository.findByEmail(email).orElse(null);
+    if (admin != null) return toResponse(admin, "ADMIN");
+
+    throw new AccountNotFoundException("No account found for email: " + email);
+}
+
+public List<AccountResponse> getAllAccounts() {
+    List<AccountResponse> all = new ArrayList<>();
+    passengerRepository.findAll().forEach(p -> all.add(toResponse(p, "PASSENGER")));
+    driverRepository.findAll().forEach(d -> all.add(toResponse(d, "DRIVER")));
+    adminRepository.findAll().forEach(a -> all.add(toResponse(a, "ADMIN")));
+    return all;
+}
+
+public AccountResponse getPassengerById(Long id) {
+    return passengerRepository.findById(id)
+            .map(p -> toResponse(p, "PASSENGER"))
+            .orElseThrow(() -> new AccountNotFoundException("Passenger not found with id: " + id));
+}
+
+public AccountResponse getDriverById(Long id) {
+    return driverRepository.findById(id)
+            .map(d -> toResponse(d, "DRIVER"))
+            .orElseThrow(() -> new AccountNotFoundException("Driver not found with id: " + id));
+}
+
+
 
     public AccountResponse updateProfile(String email, String fullName, String phoneNumber) {
         Passenger passenger = passengerRepository.findByEmail(email).orElse(null);
