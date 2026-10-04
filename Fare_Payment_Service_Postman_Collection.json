@@ -1,0 +1,177 @@
+{
+  "info": {
+    "name": "Fare & Payment Service API",
+    "_postman_id": "fare-payment-service-collection",
+    "description": "Postman collection for Fare Estimation and Payment Service APIs",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{jwt_token}}",
+        "type": "string"
+      }
+    ]
+  },
+  "item": [
+    {
+      "name": "1. Estimate Fare (CAR)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pickupLatitude\": 6.9344,\n  \"pickupLongitude\": 79.8428,\n  \"destinationLatitude\": 6.8930,\n  \"destinationLongitude\": 79.8550,\n  \"vehicleType\": \"CAR\",\n  \"estimatedDurationMin\": 15.0\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8084/api/fares/estimate",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8084",
+          "path": ["api", "fares", "estimate"]
+        }
+      }
+    },
+    {
+      "name": "2. Estimate Fare (TUKTUK)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"pickupLatitude\": 6.9344,\n  \"pickupLongitude\": 79.8428,\n  \"destinationLatitude\": 6.8930,\n  \"destinationLongitude\": 79.8550,\n  \"vehicleType\": \"TUKTUK\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8084/api/fares/estimate",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8084",
+          "path": ["api", "fares", "estimate"]
+        }
+      }
+    },
+    {
+      "name": "3. Process Successful Payment (CARD)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rideId\": 101,\n  \"passengerId\": 201,\n  \"driverId\": 301,\n  \"paymentMethod\": \"CARD\",\n  \"cardToken\": \"tok_visa_4242\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8084/api/payments",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8084",
+          "path": ["api", "payments"]
+        }
+      }
+    },
+    {
+      "name": "4. Process Simulated Failed Payment (Token ending in 0000)",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rideId\": 102,\n  \"passengerId\": 201,\n  \"driverId\": 301,\n  \"paymentMethod\": \"CARD\",\n  \"cardToken\": \"tok_declined_0000\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8084/api/payments",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8084",
+          "path": ["api", "payments"]
+        }
+      }
+    },
+    {
+      "name": "5. Process Cash Payment",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"rideId\": 103,\n  \"passengerId\": 201,\n  \"driverId\": 301,\n  \"paymentMethod\": \"CASH\"\n}"
+        },
+        "url": {
+          "raw": "http://localhost:8084/api/payments",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8084",
+          "path": ["api", "payments"]
+        }
+      }
+    },
+    {
+      "name": "6. Get Payment By ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8084/api/payments/1",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8084",
+          "path": ["api", "payments", "1"]
+        }
+      }
+    },
+    {
+      "name": "7. Get Payment By Ride ID",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8084/api/payments/ride/101",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8084",
+          "path": ["api", "payments", "ride", "101"]
+        }
+      }
+    },
+    {
+      "name": "8. Get Payment Receipt",
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "http://localhost:8084/api/payments/1/receipt",
+          "protocol": "http",
+          "host": ["localhost"],
+          "port": "8084",
+          "path": ["api", "payments", "1", "receipt"]
+        }
+      }
+    }
+  ]
+}
