@@ -1,158 +1,68 @@
-# \# RideLink Backend (IT3130 Group Assignment)
+# RideLink Backend
 
-# 
+Backend microservices for the IT3130 RideLink group assignment.
 
-# Backend microservices for a fictional ride-sharing platform.
+## Services
 
-# 
+| Service | Directory | Port | Persistence | Source branch |
+| --- | --- | ---: | --- | --- |
+| Account | `account-service` | 8081 | MySQL | `feature/account-service-setup` |
+| Driver & Vehicle | `driver-vehicle-service` | 8082 | MongoDB | `feature/driver-vehicle-service-setup` |
+| Ride Management | `ride-management-service` | 8083 | MySQL | `feature/ride-management-service-setup` |
+| Fare & Payment | `fare-payment-service` | 8084 | PostgreSQL | `fare-payment` |
 
-# \## Services and Owners
+Each service owns its database. Services must not query or modify another service's database.
 
-# 
+## Prerequisites
 
-# \- Account Service
+- JDK 21 (also supports the Java 17 services)
+- MySQL for Account and Ride Management
+- MongoDB for Driver & Vehicle
+- PostgreSQL for Fare & Payment
 
-# &#x20; - Folder: account-service
+Maven installation is not required; every service includes its own Maven wrapper.
 
-# &#x20; - Port: 8081
+## Configuration
 
-# &#x20; - Owner: <Damika / Damika 78783>
+Copy each service's `.env.example` values into your local environment or IDE run configuration. Do not commit `.env` files or real credentials.
 
+Use the same `JWT_SECRET` value for all four services. It must contain at least 32 characters so tokens issued by Account Service can be verified by the other services.
 
+## Start-up order
 
-# \- Driver \& Vehicle Service
+1. Start the databases.
+2. Start `account-service`.
+3. Start `driver-vehicle-service`.
+4. Start `ride-management-service`.
+5. Start `fare-payment-service`.
 
-# &#x20; - Folder: driver-vehicle-service
+From each service directory on Windows:
 
-# &#x20; - Port: 8082
+```powershell
+.\mvnw.cmd spring-boot:run
+```
 
-# &#x20; - Owner: <Malaka / Malaka786>
+## Tests
 
+Run the following command from each service directory:
 
+```powershell
+.\mvnw.cmd test
+```
 
-# \- Ride Management Service
+## API locations
 
-# &#x20; - Folder: ride-management-service
+| Service | Base API | Swagger UI |
+| --- | --- | --- |
+| Account | `http://localhost:8081/api/accounts` | Not currently configured |
+| Driver & Vehicle | `http://localhost:8082/api/drivers`, `http://localhost:8082/api/vehicles` | `http://localhost:8082/swagger-ui/index.html` |
+| Ride Management | `http://localhost:8083/api/rides` | Not currently configured |
+| Fare & Payment | `http://localhost:8084/api/fares`, `http://localhost:8084/api/payments` | `http://localhost:8084/swagger-ui/index.html` |
 
-# &#x20; - Port: 8083
+## Branching workflow
 
-# &#x20; - Owner: <Chamodi / Wijesinghe2004>
+- `main`: stable, demo-ready releases only.
+- `develop`: integration branch for completed service work.
+- `feature/<description>`: service and task branches merged through reviewed pull requests.
 
-
-
-# \- Fare \& Payment Service
-
-# &#x20; - Folder: fare-payment-service
-
-# &#x20; - Port: 8084
-
-# &#x20; - Owner: <Nirman / binadith821>
-
-# 
-
-# \## Branching Workflow
-
-# 
-
-# \- `main`: stable, demo-ready version only. No direct pushes.
-
-# \- `develop`: integration branch. All feature branches merge here through a pull request.
-
-# \- `feature/<short-description>`: one branch per task, created from `develop`.
-
-# \- Every pull request needs at least one review from another member before merging.
-
-# 
-
-# \## Tech Stack
-
-# 
-
-# \- Java 21
-
-# \- Spring Boot 4.1.1 (Spring Web MVC, Spring Data JPA, Spring Security, Validation)
-
-# \- MySQL 8
-
-# \- JWT (jjwt 0.12.6) for authentication
-
-# \- Maven
-
-# 
-
-# \## Prerequisites
-
-# 
-
-# \- JDK 21
-
-# \- Maven (or the included mvnw wrapper)
-
-# \- MySQL 8 running locally on port 3306
-
-# 
-
-# \## Configuration
-
-# 
-
-# Secrets are never committed. Each service reads them from environment variables.
-
-# 
-
-# \- DB\_USERNAME: MySQL username (default: root), used by all services
-
-# \- DB\_PASSWORD: MySQL password, used by all services
-
-# \- JWT\_SECRET: secret key used to sign JWT tokens, used by account-service
-
-# 
-
-# Windows (cmd) example, run in the same terminal before starting a service:
-
-# 
-
-# &#x20;   set DB\_PASSWORD=your\_password
-
-# &#x20;   set JWT\_SECRET=your\_long\_random\_secret
-
-# 
-
-# \## Databases
-
-# 
-
-# Each service owns its own database. No service accesses another service's database.
-
-# 
-
-# \- account-service: ridelink\_account\_db
-
-# \- driver-vehicle-service: ridelink\_driver\_vehicle\_db
-
-# \- ride-management-service: ridelink\_ride\_db
-
-# \- fare-payment-service: ridelink\_fare\_payment\_db
-
-# 
-
-# \## Running a Service
-
-# 
-
-# &#x20;   cd account-service
-
-&#x20;        
-
-# &#x20;   mvnw spring-boot:run
-
-# 
-
-# 
-
-# \## Endpoints and Swagger UI
-
-# 
-
-# To be added when each service is completed.
-
+The current local integration is intentionally based on `develop`; `main` is not modified.

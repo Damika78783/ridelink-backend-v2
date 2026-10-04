@@ -19,7 +19,7 @@ public class JwtUtil {
 
     private final SecretKey secretKey;
 
-    public JwtUtil(@Value("${ridelink.security.jwt.secret:RideLinkSuperSecretKeyForSigningTokensMustBeAtLeast256BitsLong!}") String secret) {
+    public JwtUtil(@Value("${ridelink.security.jwt.secret}") String secret) {
         // Ensure secret has sufficient length for HS256 (32 bytes)
         byte[] keyBytes = secret.getBytes(StandardCharsets.UTF_8);
         if (keyBytes.length < 32) {

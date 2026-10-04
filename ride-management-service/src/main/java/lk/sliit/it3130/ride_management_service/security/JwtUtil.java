@@ -3,18 +3,22 @@ package lk.sliit.it3130.ride_management_service.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.SecretKey;
+import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
 @Component
 public class JwtUtil {
 
     // MUST match the secret key used in Account Service — otherwise tokens won't verify here
-    private static final String SECRET_KEY = "RideLinkAccountServiceSecretKey1234567890ABCDEF";
+    private final SecretKey key;
 
-    private final SecretKey key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+    public JwtUtil(@Value("${jwt.secret}") String secret) {
+        this.key = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
+    }
 
     public String extractEmail(String token) {
         return extractAllClaims(token).getSubject();

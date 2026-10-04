@@ -36,7 +36,7 @@ Environment variables can be provided via `.env` (loaded automatically on startu
 | `MONGODB_URI` | `mongodb://localhost:27017/ridelink_driver_db` | MongoDB Atlas or local connection string |
 | `SERVER_PORT` | `8082` | Service HTTP port |
 | `JWT_SECURITY_ENABLED` | `false` | `true` in production; `false` for local development/demos |
-| `JWT_SECRET` | `RideLinkSuperSecretKeyForSigningTokens...` | 256-bit secret key for HMAC-SHA256 signature verification |
+| `JWT_SECRET` | Required; no default | Shared 256-bit secret key for HMAC-SHA256 token verification |
 
 ### MongoDB Atlas configuration
 Set `MONGODB_URI` locally using the placeholder format in `.env.example`. Never commit a real database username or password.
