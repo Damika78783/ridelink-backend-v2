@@ -23,6 +23,8 @@
 hs_err_pid*
 replay_pid*
 
+application-local.properties
+**/application-local.properties
 # Build output
 target/
 build/
